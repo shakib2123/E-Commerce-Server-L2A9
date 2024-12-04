@@ -1,7 +1,8 @@
 import { Server } from "http";
 import app from "./app";
+import config from "./app/config";
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || config.port;
 
 async function main() {
   try {
