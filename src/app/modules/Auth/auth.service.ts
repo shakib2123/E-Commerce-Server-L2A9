@@ -1,4 +1,3 @@
-import { User } from "@prisma/client";
 import httpStatus from "http-status";
 import AppError from "../../utils/AppError";
 import { createToken } from "../../utils/jwtHelpers";
@@ -6,6 +5,8 @@ import config from "../../config";
 import prisma from "../../utils/prisma";
 
 import bcrypt from "bcryptjs";
+import { User } from "@prisma/client";
+import { isPasswordMatched } from "./auth.utils";
 
 const registerUser = async (payload: User) => {
   const user = await prisma.user.findUnique({
@@ -76,6 +77,7 @@ const registerUser = async (payload: User) => {
 
 const loginUser = async (payload: Partial<User>) => {
   const lastLogin = new Date(Date.now()).toISOString();
+
   const user = await prisma.user.update({
     where: { email: payload.email },
     data: {
@@ -95,7 +97,7 @@ const loginUser = async (payload: Partial<User>) => {
   }
 
   const passwordMatch = await isPasswordMatched(
-    payload?.password,
+    payload?.password as string,
     user?.password
   );
 

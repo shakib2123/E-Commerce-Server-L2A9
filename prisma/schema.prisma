@@ -15,19 +15,19 @@ datasource db {
 }
 
 model User {
-  id           String     @id @default(uuid())
+  id           String    @id @default(uuid())
   name         String
-  email        String     @unique
+  email        String    @unique
   password     String
   phone        String?
-  role         UserRole   @default(USER)
+  role         UserRole  @default(USER)
   profilePhoto String?
   address      String?
-  status       UserStatus @default(ACTIVE)
-  lastLogin    DateTime?  @default(now())
-  isDeleted    Boolean    @default(false)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  lastLogin    DateTime? @default(now())
+  isBlocked    Boolean   @default(false)
+  isDeleted    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
   shop         Shop?
   followedShop FollowedShop[]
@@ -67,9 +67,4 @@ enum UserRole {
   USER
   VENDOR
   ADMIN
-}
-
-enum UserStatus {
-  ACTIVE
-  SUSPEND
 }
