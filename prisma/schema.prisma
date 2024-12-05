@@ -20,7 +20,7 @@ model User {
   email        String     @unique
   password     String
   phone        String?
-  role         UserRole   @default(CUSTOMER)
+  role         UserRole   @default(USER)
   profilePhoto String?
   address      String?
   status       UserStatus @default(ACTIVE)
@@ -29,27 +29,27 @@ model User {
   updatedAt    DateTime   @updatedAt
 
   shop         Shop?
-  shopFollower ShopFollower[]
+  followedShop FollowedShop[]
 
   @@map("users")
 }
 
 model Shop {
-  id           String         @id @default(uuid())
-  name         String?
-  description  String?
-  logo         String?
-  email        String         @unique
-  blacklisted  Boolean        @default(false)
-  user         User           @relation(fields: [email], references: [email])
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  shopFollower ShopFollower[]
+  id            String         @id @default(uuid())
+  name          String?
+  description   String?
+  logo          String?
+  email         String         @unique
+  isBlacklisted Boolean        @default(false)
+  user          User           @relation(fields: [email], references: [email])
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  followedShop  FollowedShop[]
 
   @@map("shops")
 }
 
-model ShopFollower {
+model FollowedShop {
   id        String @id @default(uuid())
   shopId    String
   userEmail String
@@ -59,7 +59,7 @@ model ShopFollower {
 }
 
 enum UserRole {
-  CUSTOMER
+  USER
   VENDOR
   ADMIN
 }
