@@ -7,7 +7,6 @@ import { UserService } from "./user.service";
 
 const getCurrentUser = catchAsync(async (req: CustomRequest, res: Response) => {
   const user = req.user;
-  console.log({ user });
 
   const result = await UserService.getCurrentUserFromDB(user.email);
 
