@@ -1,7 +1,7 @@
 import httpStatus from "http-status";
 import sendResponse from "../../utils/sendResponse";
 import catchAsync from "../../utils/catchAsync";
-import { Request, Response } from "express";
+import { Response } from "express";
 import { CustomRequest } from "../../middlewares/auth";
 import { UserService } from "./user.service";
 
