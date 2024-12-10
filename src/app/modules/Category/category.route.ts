@@ -8,11 +8,19 @@ import { CategoryController } from "./category.controller";
 const router = Router();
 
 router.get("/", CategoryController.getAllCategories);
+
 router.post(
   "/",
   auth(UserRole.ADMIN),
   validateRequest(CategoryValidations.createCategoryValidationSchema),
   CategoryController.createCategory
+);
+
+router.patch(
+  "/:id",
+  auth(UserRole.ADMIN),
+  validateRequest(CategoryValidations.updateCategoryValidationSchema),
+  CategoryController.updateCategory
 );
 
 export const CategoryRoutes = router;

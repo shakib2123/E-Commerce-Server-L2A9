@@ -13,8 +13,17 @@ const getAllCategoriesFromDB = async () => {
   const result = await prisma.category.findMany();
   return result;
 };
+const updateCategoryIntoDB = async (id: string, payload: Category) => {
+  const result = await prisma.category.update({
+    where: { id },
+    data: payload,
+  });
+
+  return result;
+};
 
 export const CategoryServices = {
   createCategoryIntoDB,
   getAllCategoriesFromDB,
+  updateCategoryIntoDB,
 };
