@@ -6,7 +6,9 @@ import { CustomRequest } from "../../middlewares/auth";
 import { UserService } from "./user.service";
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
-  const result = await UserService.getAllUsersFromDB();
+  const { status } = req.query;
+
+  const result = await UserService.getAllUsersFromDB(status as string);
 
   sendResponse(res, {
     success: true,

@@ -3,13 +3,14 @@ import AppError from "../../utils/AppError";
 import prisma from "../../utils/prisma";
 import { User } from "@prisma/client";
 
-const getAllUsersFromDB = async () => {
+const getAllUsersFromDB = async (status: string) => {
+  let filter: any = {};
+  if (status !== "all") {
+    filter.role = { not: "ADMIN" };
+  }
+
   const result = await prisma.user.findMany({
-    where: {
-      role: {
-        not: "ADMIN",
-      },
-    },
+    where: filter,
   });
   return result;
 };
