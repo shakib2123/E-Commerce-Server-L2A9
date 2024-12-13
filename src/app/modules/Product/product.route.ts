@@ -18,6 +18,12 @@ router.post(
   ProductController.createProduct
 );
 
+router.post(
+  "/create-duplicate-product",
+  auth(UserRole.VENDOR),
+  validateRequest(ProductValidation.createDuplicateProductValidation),
+  ProductController.createDuplicateProduct
+);
 router.get(
   "/my-products",
   auth(UserRole.VENDOR),

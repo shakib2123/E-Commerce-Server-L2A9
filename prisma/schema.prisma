@@ -88,26 +88,16 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  reviews Review[] // Relation to customer reviews
-  orders  Order[] // Relation to orders including this product
+  reviews Review[]
+  orders  Order[]
 
   @@map("products")
-}
-
-model Category {
-  id          String  @id @default(uuid())
-  name        String  @unique
-  description String?
-
-  products Product[]
-
-  @@map("categories")
 }
 
 model Review {
   id        String   @id @default(uuid())
   productId String
-  product   Product  @relation(fields: [productId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   rating    Int
@@ -129,9 +119,19 @@ model Order {
 
   shop    Shop    @relation(fields: [shopId], references: [id])
   user    User    @relation(fields: [userId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@map("orders")
+}
+
+model Category {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String?
+
+  products Product[]
+
+  @@map("categories")
 }
 
 model Coupon {

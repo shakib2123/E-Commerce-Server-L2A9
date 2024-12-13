@@ -53,6 +53,12 @@ const createProductIntoDB = async (
   return result;
 };
 
+const createDuplicateProduct = async (payload: Product) => {
+  const result = await prisma.product.create({ data: payload });
+
+  return result;
+};
+
 const getMyProductsFromDB = async (user: User) => {
   const result = await prisma.product.findMany({
     where: {
@@ -69,4 +75,5 @@ const getMyProductsFromDB = async (user: User) => {
 export const ProductService = {
   createProductIntoDB,
   getMyProductsFromDB,
+  createDuplicateProduct,
 };
