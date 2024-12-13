@@ -9,6 +9,12 @@ import { UserRole } from "@prisma/client";
 
 const router = Router();
 
+router.get(
+  "/my-products",
+  auth(UserRole.VENDOR),
+  ProductController.getMyProducts
+);
+
 router.post(
   "/",
   auth(UserRole.VENDOR),
@@ -24,10 +30,7 @@ router.post(
   validateRequest(ProductValidation.createDuplicateProductValidation),
   ProductController.createDuplicateProduct
 );
-router.get(
-  "/my-products",
-  auth(UserRole.VENDOR),
-  ProductController.getMyProducts
-);
+
+router.delete("/:id", auth(UserRole.VENDOR), ProductController.deleteProduct);
 
 export const ProductRoutes = router;

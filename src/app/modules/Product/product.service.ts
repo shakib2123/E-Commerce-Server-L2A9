@@ -72,8 +72,18 @@ const getMyProductsFromDB = async (user: User) => {
   return result;
 };
 
+const deleteProductFromDB = async (id: string) => {
+  const result = await prisma.product.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
 export const ProductService = {
   createProductIntoDB,
   getMyProductsFromDB,
   createDuplicateProduct,
+  deleteProductFromDB,
 };
