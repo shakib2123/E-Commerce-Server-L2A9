@@ -15,6 +15,7 @@ const createProductIntoDB = async (
   const userData = await prisma.user.findUnique({
     where: {
       id: user.id,
+      isDeleted: false,
     },
     include: {
       shop: true,
@@ -52,6 +53,20 @@ const createProductIntoDB = async (
   return result;
 };
 
+const getMyProductsFromDB = async (user: User) => {
+  const result = await prisma.product.findMany({
+    where: {
+      userId: user.id,
+    },
+    include: {
+      category: true,
+    },
+  });
+
+  return result;
+};
+
 export const ProductService = {
   createProductIntoDB,
+  getMyProductsFromDB,
 };

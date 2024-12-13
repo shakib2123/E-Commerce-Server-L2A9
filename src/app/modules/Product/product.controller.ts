@@ -28,6 +28,20 @@ const createProduct = catchAsync(async (req: CustomRequest, res: Response) => {
   });
 });
 
+const getMyProducts = catchAsync(async (req: CustomRequest, res: Response) => {
+  const user = req.user;
+
+  const result = await ProductService.getMyProductsFromDB(user);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Products retrieved successfully",
+    data: result,
+  });
+});
+
 export const ProductController = {
   createProduct,
+  getMyProducts,
 };

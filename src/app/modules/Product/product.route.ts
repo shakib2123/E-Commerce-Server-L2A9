@@ -18,4 +18,10 @@ router.post(
   ProductController.createProduct
 );
 
+router.get(
+  "/my-products",
+  auth(UserRole.VENDOR),
+  ProductController.getMyProducts
+);
+
 export const ProductRoutes = router;
