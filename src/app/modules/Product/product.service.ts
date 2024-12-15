@@ -72,6 +72,26 @@ const getMyProductsFromDB = async (user: User) => {
   return result;
 };
 
+const getProductByIdFromDB = async (id: string) => {
+  const result = await prisma.product.findUnique({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
+const updateProductIntoDB = async (id: string, payload: Partial<Product>) => {
+  console.log(payload);
+  const result = await prisma.product.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+  return result;
+};
+
 const deleteProductFromDB = async (id: string) => {
   const result = await prisma.product.delete({
     where: {
@@ -85,5 +105,7 @@ export const ProductService = {
   createProductIntoDB,
   getMyProductsFromDB,
   createDuplicateProduct,
+  updateProductIntoDB,
   deleteProductFromDB,
+  getProductByIdFromDB,
 };

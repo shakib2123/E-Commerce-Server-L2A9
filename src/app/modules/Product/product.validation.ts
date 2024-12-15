@@ -37,7 +37,40 @@ const createDuplicateProductValidation = z.object({
   }),
 });
 
+const updateProductValidation = z.object({
+  body: z.object({
+    name: z.string({ required_error: "Product name is required" }).optional(),
+    description: z
+      .string({
+        required_error: "Product description is required",
+      })
+      .optional(),
+    price: z.number({ required_error: "Product price is required" }).optional(),
+    discountPrice: z
+      .number({
+        required_error: "Product discount price is required",
+      })
+      .optional(),
+    categoryId: z
+      .string({ required_error: "Product category is required" })
+      .optional(),
+    shopId: z
+      .string({ required_error: "Product shop Id is required" })
+      .optional(),
+    userId: z
+      .string({ required_error: "Product user Id is required" })
+      .optional(),
+    inventoryCount: z
+      .number({
+        required_error: "Product inventory count is required",
+      })
+      .optional(),
+    images: z.array(z.string()).optional(),
+  }),
+});
+
 export const ProductValidation = {
   createProductValidation,
   createDuplicateProductValidation,
+  updateProductValidation,
 };

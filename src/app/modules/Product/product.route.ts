@@ -15,6 +15,8 @@ router.get(
   ProductController.getMyProducts
 );
 
+router.get("/:id", ProductController.getProductById);
+
 router.post(
   "/",
   auth(UserRole.VENDOR),
@@ -29,6 +31,13 @@ router.post(
   auth(UserRole.VENDOR),
   validateRequest(ProductValidation.createDuplicateProductValidation),
   ProductController.createDuplicateProduct
+);
+
+router.patch(
+  "/:id",
+  auth(UserRole.VENDOR),
+  validateRequest(ProductValidation.updateProductValidation),
+  ProductController.updateProduct
 );
 
 router.delete("/:id", auth(UserRole.VENDOR), ProductController.deleteProduct);
