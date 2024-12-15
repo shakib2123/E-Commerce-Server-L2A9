@@ -40,6 +40,17 @@ const createDuplicateProduct = catchAsync(
   }
 );
 
+const getAllProducts = catchAsync(async (req: Request, res: Response) => {
+  const result = await ProductService.getAllProductsFromDB();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Products retrieved successfully",
+    data: result,
+  });
+});
+
 const getMyProducts = catchAsync(async (req: CustomRequest, res: Response) => {
   const user = req.user;
 
@@ -96,4 +107,5 @@ export const ProductController = {
   deleteProduct,
   getProductById,
   updateProduct,
+  getAllProducts,
 };

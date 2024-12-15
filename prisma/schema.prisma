@@ -28,6 +28,7 @@ model User {
   product      Product[]
   review       Review[]
   order        Order[]
+  productView  ProductView[]
 
   @@map("users")
 }
@@ -88,10 +89,26 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  reviews Review[]
-  orders  Order[]
+  reviews     Review[]
+  orders      Order[]
+  productView ProductView[]
 
   @@map("products")
+}
+
+model ProductView {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@map("product_views")
 }
 
 model Review {
