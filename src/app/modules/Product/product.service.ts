@@ -137,6 +137,19 @@ const getMyProductsFromDB = async (user: User) => {
   return result;
 };
 
+const getShopProductsFromDB = async (shopId: string) => {
+  const result = await prisma.product.findMany({
+    where: {
+      shopId,
+    },
+    include: {
+      category: true,
+    },
+  });
+
+  return result;
+};
+
 const getProductByIdFromDB = async (id: string) => {
   const result = await prisma.product.findUnique({
     where: {
@@ -191,4 +204,5 @@ export const ProductService = {
   getProductByIdFromDB,
   getAllProductsFromDB,
   getFlashSaleProductsFromDB,
+  getShopProductsFromDB,
 };

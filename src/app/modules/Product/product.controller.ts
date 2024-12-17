@@ -82,6 +82,18 @@ const getMyProducts = catchAsync(async (req: CustomRequest, res: Response) => {
     data: result,
   });
 });
+const getShopProducts = catchAsync(async (req: Request, res: Response) => {
+  const { shopId } = req.params;
+
+  const result = await ProductService.getShopProductsFromDB(shopId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Products retrieved successfully",
+    data: result,
+  });
+});
 
 const getProductById = catchAsync(async (req: CustomRequest, res: Response) => {
   const { id } = req.params;
@@ -128,4 +140,5 @@ export const ProductController = {
   updateProduct,
   getAllProducts,
   getFlashSaleProducts,
+  getShopProducts,
 };

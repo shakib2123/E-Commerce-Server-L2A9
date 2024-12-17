@@ -18,6 +18,7 @@ router.get(
   auth(UserRole.VENDOR),
   ProductController.getMyProducts
 );
+router.get("/shop-products/:shopId", ProductController.getShopProducts);
 
 router.get("/:id", ProductController.getProductById);
 
