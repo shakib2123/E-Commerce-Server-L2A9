@@ -6,6 +6,11 @@ import httpStatus from "http-status";
 import { TImageFiles } from "../../interfaces/image.interface";
 import sendResponse from "../../utils/sendResponse";
 import { CustomRequest } from "../../middlewares/auth";
+import pick from "../../utils/pick";
+import {
+  productFilterAbleFields,
+  productSearchAbleFields,
+} from "./product.constant";
 
 const createProduct = catchAsync(async (req: CustomRequest, res: Response) => {
   if (!req.files) {
@@ -41,7 +46,21 @@ const createDuplicateProduct = catchAsync(
 );
 
 const getAllProducts = catchAsync(async (req: Request, res: Response) => {
-  const result = await ProductService.getAllProductsFromDB();
+  const filters = pick(req.query, productFilterAbleFields);
+  // const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+
+  const result = await ProductService.getAllProductsFromDB(filters);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Products retrieved successfully",
+    data: result,
+  });
+});
+
+const getFlashSaleProducts = catchAsync(async (req: Request, res: Response) => {
+  const result = await ProductService.getFlashSaleProductsFromDB();
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -108,4 +127,5 @@ export const ProductController = {
   getProductById,
   updateProduct,
   getAllProducts,
+  getFlashSaleProducts,
 };

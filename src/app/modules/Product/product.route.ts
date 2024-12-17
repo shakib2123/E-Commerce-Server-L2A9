@@ -10,6 +10,9 @@ import { UserRole } from "@prisma/client";
 const router = Router();
 
 router.get("/", ProductController.getAllProducts);
+
+router.get("/flash-sales", ProductController.getFlashSaleProducts);
+
 router.get(
   "/my-products",
   auth(UserRole.VENDOR),

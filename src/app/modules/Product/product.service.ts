@@ -1,8 +1,9 @@
-import { Product, User } from "@prisma/client";
+import { Prisma, Product, User } from "@prisma/client";
 import { TImageFiles } from "../../interfaces/image.interface";
 import prisma from "../../utils/prisma";
 import AppError from "../../utils/AppError";
 import httpStatus from "http-status";
+import { productSearchAbleFields } from "./product.constant";
 
 const createProductIntoDB = async (
   user: User,
@@ -59,8 +60,50 @@ const createDuplicateProduct = async (payload: Product) => {
   return result;
 };
 
-const getAllProductsFromDB = async () => {
+const getAllProductsFromDB = async (params: any) => {
+  const { searchTerm, minPrice, maxPrice, ...filterData } = params;
+
+  const andCondition: Prisma.ProductWhereInput[] = [];
+
+  if (searchTerm) {
+    andCondition.push({
+      OR: productSearchAbleFields.map((field) => ({
+        [field]: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      })),
+    });
+  }
+
+  if (Object.keys(filterData).length > 0) {
+    andCondition.push({
+      AND: Object.keys(filterData).map((key) => ({
+        [key]: (filterData as any)[key],
+      })),
+    });
+  }
+
+  if (minPrice) {
+    andCondition.push({
+      price: {
+        gte: Number(minPrice),
+      },
+    });
+  }
+
+  if (maxPrice) {
+    andCondition.push({
+      price: {
+        lte: Number(maxPrice),
+      },
+    });
+  }
+
   const result = await prisma.product.findMany({
+    where: {
+      AND: andCondition,
+    },
     include: {
       category: true,
       user: true,
@@ -69,6 +112,15 @@ const getAllProductsFromDB = async () => {
     },
   });
 
+  return result;
+};
+
+const getFlashSaleProductsFromDB = () => {
+  const result = prisma.product.findMany({
+    where: {
+      isFlashSale: true,
+    },
+  });
   return result;
 };
 
@@ -90,7 +142,23 @@ const getProductByIdFromDB = async (id: string) => {
     where: {
       id,
     },
+    include: {
+      orderItem: {
+        include: {
+          order: true,
+        },
+      },
+      category: true,
+      reviews: {
+        include: {
+          user: true,
+        },
+      },
+      user: true,
+      shop: true,
+    },
   });
+
   return result;
 };
 
@@ -122,4 +190,5 @@ export const ProductService = {
   deleteProductFromDB,
   getProductByIdFromDB,
   getAllProductsFromDB,
+  getFlashSaleProductsFromDB,
 };

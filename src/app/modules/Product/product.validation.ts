@@ -66,6 +66,8 @@ const updateProductValidation = z.object({
       })
       .optional(),
     images: z.array(z.string()).optional(),
+    isFlashSale: z.boolean().optional(),
+    flashSalePrice: z.number().optional(),
   }),
 });
 
