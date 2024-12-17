@@ -120,6 +120,10 @@ const getFlashSaleProductsFromDB = () => {
     where: {
       isFlashSale: true,
     },
+    include: {
+      category: true,
+      reviews: true,
+    },
   });
   return result;
 };
