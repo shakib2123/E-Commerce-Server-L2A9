@@ -6,9 +6,11 @@ import { multerUpload } from "../../config/multer.config";
 
 const router = Router();
 
-router.get("/", auth(UserRole.ADMIN), ShopController.getAllShops);
+router.get("/", ShopController.getAllShops);
 
-router.get("/my-shop", auth(UserRole.VENDOR), ShopController.getMyShop);
+router.get("/:id", ShopController.getShopById);
+
+router.get("/my-shop/:email", auth(UserRole.VENDOR), ShopController.getMyShop);
 
 router.patch(
   "/:id",
@@ -21,6 +23,12 @@ router.patch(
   multerUpload.single("shopImage"),
   auth(UserRole.VENDOR),
   ShopController.updateShopImage
+);
+router.patch(
+  "/update-shop-banner-image/:id",
+  multerUpload.single("bannerImage"),
+  auth(UserRole.VENDOR),
+  ShopController.updateShopBannerImage
 );
 
 export const ShopRoutes = router;

@@ -39,6 +39,7 @@ model Shop {
   name        String?
   description String?
   logo        String?
+  bannerImage String?
   email       String   @unique
   isBlocked   Boolean  @default(false)
   isDeleted   Boolean  @default(false)

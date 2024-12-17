@@ -12,10 +12,32 @@ const getAllShopsFromDB = async () => {
   return result;
 };
 
+const getShopByIdFromDB = async (id: string) => {
+  const result = await prisma.shop.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      followedShop: true,
+      user: true,
+      order: true,
+      product: true,
+    },
+  });
+
+  return result;
+};
+
 const getMyShopFromDB = async (email: string) => {
   const result = await prisma.shop.findUnique({
     where: {
       email,
+    },
+    include: {
+      followedShop: true,
+      user: true,
+      order: true,
+      product: true,
     },
   });
 
@@ -40,10 +62,22 @@ const updateShopImageIntoDB = async (id: string, file: TImageFile) => {
 
   return result;
 };
+const updateShopBannerImageIntoDB = async (id: string, file: TImageFile) => {
+  const result = await prisma.shop.update({
+    where: { id },
+    data: {
+      bannerImage: file.path,
+    },
+  });
+
+  return result;
+};
 
 export const ShopServices = {
   getAllShopsFromDB,
   updateShopIntoDB,
+  getShopByIdFromDB,
   getMyShopFromDB,
   updateShopImageIntoDB,
+  updateShopBannerImageIntoDB,
 };

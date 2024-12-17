@@ -16,10 +16,10 @@ const getAllShops = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-const getMyShop = catchAsync(async (req: CustomRequest, res: Response) => {
-  const user = req.user;
-  const { email } = user;
-  const result = await ShopServices.getMyShopFromDB(email as string);
+
+const getShopById = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await ShopServices.getShopByIdFromDB(id);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -28,6 +28,19 @@ const getMyShop = catchAsync(async (req: CustomRequest, res: Response) => {
     data: result,
   });
 });
+
+const getMyShop = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
+  const result = await ShopServices.getMyShopFromDB(email as string);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "My shop retrieved successfully",
+    data: result,
+  });
+});
+
 const updateShop = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const payload = req.body;
@@ -57,9 +70,30 @@ const updateShopImage = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateShopBannerImage = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const file = req.file;
+
+    const result = await ShopServices.updateShopBannerImageIntoDB(
+      id,
+      file as TImageFile
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Shop Banner updated successfully",
+      data: result,
+    });
+  }
+);
+
 export const ShopController = {
   getAllShops,
   updateShop,
   getMyShop,
   updateShopImage,
+  getShopById,
+  updateShopBannerImage,
 };
